@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ThamerZacStrategy extends BattleshipPlayer
+public class ThamerZacStrategy extends ComputerBattleshipPlayer
 {
+
+
 	public Position pos1;
 	public Position pos2;
 	public Position pos3;
@@ -17,6 +19,9 @@ public class ThamerZacStrategy extends BattleshipPlayer
 	public int toprightsectionshotCounter = 0;
 	public int bottomrightsectionshotCounter = 0;
 	public int bottomleftsectionshotCounter = 0;
+
+	public int shiphitRow = 0;
+	public int shiphitCol = 0;
 
 
 	public ArrayList <Position> strategy = new ArrayList <Position>();
@@ -35,6 +40,7 @@ public class ThamerZacStrategy extends BattleshipPlayer
 
 	public ThamerZacStrategy()
 	{
+		Position.setMyStrat(true);
 		shotSetups();
 		afterPath();
 	}
@@ -55,7 +61,13 @@ public class ThamerZacStrategy extends BattleshipPlayer
 	//returns computers shot
 	public Position shoot()
 	{
-		Position pos = strategy.get(shotCounter);
+		Position pos = null;
+		if(shotCounter<37)
+		{
+			pos = strategy.get(shotCounter);
+		}
+		Position.setMyStrat(true);
+
 
 		//The last section of paths, the corner sides of the grid
 		if(topsectionshotCounter >=topMiddleSection.size() && bottomsectionshotCounter >= bottomMiddleSection.size())
@@ -90,23 +102,35 @@ public class ThamerZacStrategy extends BattleshipPlayer
 		{
 			Random r = new Random();
 			int num = r.nextInt(1);
-			int randomNum = r.nextInt(topMiddleSection.size());
-			if (num == 0)
+			if(topMiddleSection.size()>0)
 			{
-				pos = topMiddleSection.get(randomNum);
-				topMiddleSection.remove(randomNum);
-				topsectionshotCounter++;
+				int randomNumTMS = r.nextInt(topMiddleSection.size());
+				if (num == 0)
+				{
+					pos = topMiddleSection.get(randomNumTMS);
+					topMiddleSection.remove(randomNumTMS);
+					topsectionshotCounter++;
 
+				}
 			}
-			else if (num == 1)
+			if(bottomMiddleSection.size()>0)
 			{
-				pos = bottomMiddleSection.get(randomNum);
-				bottomMiddleSection.remove(randomNum);
-				bottomsectionshotCounter++;
+				int randomNumBMS = r.nextInt(bottomMiddleSection.size());
+				if (num == 1)
+				{
+					pos = bottomMiddleSection.get(randomNumBMS);
+					bottomMiddleSection.remove(randomNumBMS);
+					bottomsectionshotCounter++;
+				}
+
+
 			}
 		}
 		else
+			shotCounter++;
+		/*else
 		{
+			//System.out.println("Checking for hits");
 			//After hitting all of the possible squares surrounding one that has been hit it goes back to false
 			if (shiphitCounter == 5)
 				shipHit = false;
@@ -114,52 +138,54 @@ public class ThamerZacStrategy extends BattleshipPlayer
 			//Checks all of the surrounding squares of the square that has been hit w the ship in it
 			if (shipHit)
 			{
-				int row = getRow(pos);
-				int col = getCol(pos);
-
 				if (shiphitCounter == 1)
-					pos = new Position (row +1, col);
+					pos = new Position (shiphitRow +1, shiphitCol);
 
 				else if (shiphitCounter == 2)
-					pos = new Position (row -1, col);
+					pos = new Position (shiphitRow -1, shiphitCol);
 
 				else if (shiphitCounter == 3)
-					pos = new Position (row, col+1);
+					pos = new Position (shiphitRow, shiphitCol+1);
 
 				else if (shiphitCounter == 4)
-					pos = new Position (row, col+1);
-
+					pos = new Position (shiphitRow, shiphitCol+1);
 				shiphitCounter++;
+
 			}
-			else
-				shotCounter++;
+
 
 
 			//If the pos has a ship and is hit
-			if (grid.hit(pos))
+			if (grid.hit(pos)&&!shipHit)
 			{
+				System.out.println("There has been a hit");
 				shipHit = true;
 				shiphitCounter = 1;
+				shiphitRow = getRow(pos);
+				shiphitCol = getCol(pos);
 			}
 		}
-
+		 */
+		pos.setMyStrat(false);
 		return pos;
+
 	}
 
 	public int getRow(Position p)
 	{
-		return p.getrowIndex();
+		return p.getrowIndex()+1;
 	}
 
 	public int getCol(Position p)
 	{
-		return p.getcolumnIndex();
+		return p.getcolumnIndex()+1;
 	}
 
 
 	public void shotSetups()
 	{
 		//Blue Square
+		strategy.add(new Position('E', 5));
 		strategy.add(new Position('E', 5));
 		strategy.add(new Position('E', 6));
 		strategy.add(new Position('F', 6));
@@ -173,10 +199,10 @@ public class ThamerZacStrategy extends BattleshipPlayer
 
 
 		//Green Path
-		for (int i = 7; i > 11; i++)
+		int r = 4;
+		for (int z = 7; z < 11; z++)
 		{
-			int r = 4;
-			strategy.add(new Position(r, i));
+			strategy.add(new Position(r, z));
 			r--;
 		}
 
@@ -187,36 +213,36 @@ public class ThamerZacStrategy extends BattleshipPlayer
 		}
 
 		//Pink Path
+		int r2 = 7;
 		for (int i = 4; i > 0; i--)
 		{
-			int c = 1;
-			strategy.add(new Position(i, c));
-			c++; 
+			strategy.add(new Position(r2, i));
+			r2++; 
 		}
 
 
 		//Brown Path
 		for (int i = 1; i< 5; i++)
 		{
-			strategy.add(new Position(i, 5));
+			strategy.add(new Position(5, i));
 		}
 
 		//Bright Yellow Path
-		for (int i = 7; i< 11; i++)
+		for (int i = 7; i < 11; i++)
 		{
-			strategy.add(new Position(i, 5));
+			strategy.add(new Position(5, i));
 		}
 
 		//Dark Yellow Path
-		for (int i = 7; i< 11; i++)
+		for (int i = 7; i < 11; i++)
 		{
-			strategy.add(new Position(i, 6));
+			strategy.add(new Position(6, i));
 		}
 
 		//Grey Path
-		for (int i = 1; i< 5; i++)
+		for (int i = 1; i < 5; i++)
 		{
-			strategy.add(new Position(i, 6));
+			strategy.add(new Position(6, i));
 		}
 
 
@@ -235,12 +261,13 @@ public class ThamerZacStrategy extends BattleshipPlayer
 		}
 		for (int i = 4; i<8; i++)
 		{
-			topMiddleSection.add(new Position(1,i));
+			topMiddleSection.add(new Position(3,i));
 		}
 		for (int i = 5; i<7; i++)
 		{
-			topMiddleSection.add(new Position(1,i));
+			topMiddleSection.add(new Position(4,i));
 		}
+		//System.out.println(topMiddleSection.size());
 
 		//Main Bottom Middle Section
 		for (int i = 5; i<7; i++)
@@ -310,12 +337,6 @@ public class ThamerZacStrategy extends BattleshipPlayer
 		{
 			bottomRightSection.add(new Position (7, i));
 		}
-
-
-
-
-
-
 	}
 
 	public Position initialShot()
@@ -323,9 +344,7 @@ public class ThamerZacStrategy extends BattleshipPlayer
 		return pos1;
 	}
 
-
-
-	//The startGame method needs to be updated so that it does not ask for the human player�s name.
+	//The startGame method needs to be updated so that it does not ask for the human playerï¿½s name.
 	public void startGame()
 	{
 		System.out.println("BATTLESHIP");
@@ -334,3 +353,5 @@ public class ThamerZacStrategy extends BattleshipPlayer
 
 
 }
+
+
