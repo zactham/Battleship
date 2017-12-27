@@ -1,7 +1,7 @@
 //Zac Thamer
 import java.util.ArrayList;
 //determines how effective your computer Battleship player is
-public class PlayerEvaluator 
+public class PlayerEvaluator extends BattleshipPlayer
 {
 	//private int turns;
 	private ArrayList <Integer> turnsList = new ArrayList<Integer>();
@@ -59,3 +59,5 @@ public class PlayerEvaluator
 		return averageTurns;
 	}
 }
+
+

@@ -70,27 +70,27 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 	
 		//The last section of paths, the corner sides of the grid
-		if(topsectionshotCounter >=topMiddleSection.size() && bottomsectionshotCounter >= bottomMiddleSection.size())
+		if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size())
 		{
 			Random r = new Random();
-			int num = r.nextInt(0)+3;
-			if (num == 0)
+			int num = r.nextInt(5);
+			if (num == 1 && topleftsectionshotCounter>topLeftSection.size())
 			{
 				pos = topLeftSection.get(topleftsectionshotCounter);
 				topleftsectionshotCounter++;
 
 			}
-			else if (num == 1)
+			else if (num == 2 && toprightsectionshotCounter>topRightSection.size())
 			{
 				pos = topRightSection.get(toprightsectionshotCounter);
 				toprightsectionshotCounter++;
 			}
-			else if (num == 2)
+			else if (num == 3 && bottomrightsectionshotCounter>bottomRightSection.size())
 			{
 				pos = bottomRightSection.get(bottomrightsectionshotCounter);
 				bottomrightsectionshotCounter++;
 			}
-			else if (num == 3)
+			else if (num == 4 && bottomleftsectionshotCounter>bottomLeftSection.size())
 			{
 				pos = bottomLeftSection.get(bottomleftsectionshotCounter);
 				bottomleftsectionshotCounter++;
@@ -101,12 +101,13 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		if (shotCounter >= strategy.size())
 		{
 			Random r = new Random();
-			int num = r.nextInt(1);
+			int num = r.nextInt(2);
 			if(topMiddleSection.size()>0)
 			{
 				int randomNumTMS = r.nextInt(topMiddleSection.size());
 				if (num == 0)
 				{
+					System.out.println(num);
 					pos = topMiddleSection.get(randomNumTMS);
 					topMiddleSection.remove(randomNumTMS);
 					topsectionshotCounter++;
@@ -118,6 +119,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 				int randomNumBMS = r.nextInt(bottomMiddleSection.size());
 				if (num == 1)
 				{
+					System.out.println(num);
 					pos = bottomMiddleSection.get(randomNumBMS);
 					bottomMiddleSection.remove(randomNumBMS);
 					bottomsectionshotCounter++;
