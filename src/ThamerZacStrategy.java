@@ -4,7 +4,8 @@ import java.util.Random;
 public class ThamerZacStrategy extends ComputerBattleshipPlayer
 {
 
-
+	private Position prevPos = null;
+	
 	public Position pos1;
 	public Position pos2;
 	public Position pos3;
@@ -69,7 +70,21 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			pos = strategy.get(shotCounter);
 		}
 		Position.setMyStrat(true);
+		
+		// check for hit at previous position
+		if (prevPos != null)
+		{
+			if (grid.hit(prevPos))
+			{
+				System.out.println("There has been a hit");
 
+				shipHit = true;
+				shiphitCounter = 1;
+				shiphitRow = getRow(prevPos);
+				shiphitCol = getCol(prevPos);
+			}
+			
+		}
 
 		//The last section of paths, the corner sides of the grid
 		if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size())
@@ -156,25 +171,12 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			}
 
 
-
-		if (!shipHit)
-				grid.dumpShipConditions();
-
-			//If the pos has a ship and is hit
-			if (grid.hit(pos)&&!shipHit)
-			{
-				System.out.println("There has been a hit");
-
-				shipHit = true;
-				shiphitCounter = 1;
-				shiphitRow = getRow(pos);
-				shiphitCol = getCol(pos);
-			}
 		}
 
 		pos.setMyStrat(false);
-		if(pos == null)
-			System.out.println("pos is null");
+
+		prevPos = pos;		// record position for next turn
+		
 		return pos;
 
 	}
@@ -213,7 +215,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 	public void shotSetups()
 	{
 		//Blue Square
-		strategy.add(new Position('E', 5));
+		strategy.add(new Position('E', 5));		// ignored
 		strategy.add(new Position('E', 5));
 		strategy.add(new Position('E', 6));
 		strategy.add(new Position('F', 6));
@@ -222,7 +224,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		//Red Path
 		for (int i = 4; i > 0; i--)
 		{
-			strategy.add(new Position(i, i));
+			strategy.add(new Position((char)('A'+i-1), i));
 		}
 
 
@@ -230,21 +232,21 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		int r = 4;
 		for (int z = 7; z < 11; z++)
 		{
-			strategy.add(new Position(r, z));
+			strategy.add(new Position((char)('A'+r-1), z));
 			r--;
 		}
 
 		//Dark Red Path
 		for (int i = 7; i < 11; i++)
 		{
-			strategy.add(new Position(i, i));
+			strategy.add(new Position((char)('A'+i-1), i));
 		}
 
 		//Pink Path
 		int r2 = 7;
 		for (int i = 4; i > 0; i--)
 		{
-			strategy.add(new Position(r2, i));
+			strategy.add(new Position((char)('A'+r2-1), i));
 			r2++; 
 		}
 
@@ -252,25 +254,25 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		//Brown Path
 		for (int i = 1; i< 5; i++)
 		{
-			strategy.add(new Position(5, i));
+			strategy.add(new Position((char)('A'+5-1), i));
 		}
 
 		//Bright Yellow Path
 		for (int i = 7; i < 11; i++)
 		{
-			strategy.add(new Position(5, i));
+			strategy.add(new Position((char)('A'+5-1), i));
 		}
 
 		//Dark Yellow Path
 		for (int i = 7; i < 11; i++)
 		{
-			strategy.add(new Position(6, i));
+			strategy.add(new Position((char)('A'+6-1), i));
 		}
 
 		//Grey Path
 		for (int i = 1; i < 5; i++)
 		{
-			strategy.add(new Position(6, i));
+			strategy.add(new Position((char)('A'+6-1), i));
 		}
 
 
