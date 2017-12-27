@@ -9,6 +9,7 @@ public class BattleshipGame
 	public BattleshipGame(BattleshipPlayer player) throws Exception
 	{
 		p = player;
+		p.setGrid(g);
 		oc.placeAllBoats();
 		//oc.dumpGrid();		// FOR TESTING ONLY
 		player.startGame();

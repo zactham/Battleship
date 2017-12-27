@@ -4,8 +4,8 @@ public class BattleshipPlayer
 {
 	Scanner input = new Scanner (System.in);
 	private String name;
+	public BattleshipGrid grid = null;
 
-	BattleshipGrid grid = new BattleshipGrid();
 
 	int[] numArray = new int[10];
 	char[][] playerArray = new char[11][11];
@@ -73,6 +73,11 @@ public class BattleshipPlayer
 	protected void updateGrid(Position pos, boolean hit, char initial)
 	{
 		grid.shotAt(pos,hit,initial);
+	}
+
+	public void setGrid(BattleshipGrid grid)
+	{
+		this.grid = grid;
 	}
 
 	/*

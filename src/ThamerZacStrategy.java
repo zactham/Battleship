@@ -36,7 +36,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 	public int shotCounter = 1;
 	public boolean hitSquare = false;
-	public BattleshipGrid grid = new BattleshipGrid ();
+	
 
 	public ThamerZacStrategy()
 	{
@@ -117,7 +117,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		else
 			shotCounter++;
 
-		/*
+
 		{
 			//System.out.println("Checking for hits");
 			//After hitting all of the possible squares surrounding one that has been hit it goes back to false
@@ -130,47 +130,26 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 				if (shiphitCounter == 1)
 				{
 					pos = new Position (shiphitRow +1, shiphitCol);
-					removePos(pos,strategy);
-					removePos(pos,topMiddleSection);
-					removePos(pos,bottomMiddleSection);
-					removePos(pos,topLeftSection);
-					removePos(pos,topRightSection);
-					removePos(pos,bottomRightSection);
-
+					removeAllLists(pos);
 				}
 
 
 				else if (shiphitCounter == 2)
 				{
 					pos = new Position (shiphitRow -1, shiphitCol);
-					removePos(pos,strategy);
-					removePos(pos,topMiddleSection);
-					removePos(pos,bottomMiddleSection);
-					removePos(pos,topLeftSection);
-					removePos(pos,topRightSection);
-					removePos(pos,bottomRightSection);
+					removeAllLists(pos);
 				}
 
 				else if (shiphitCounter == 3)
 				{
 					pos = new Position (shiphitRow, shiphitCol+1);
-					removePos(pos,strategy);
-					removePos(pos,topMiddleSection);
-					removePos(pos,bottomMiddleSection);
-					removePos(pos,topLeftSection);
-					removePos(pos,topRightSection);
-					removePos(pos,bottomRightSection);
+					removeAllLists(pos);
 				}
 
 				else if (shiphitCounter == 4)
 				{
-					pos = new Position (shiphitRow, shiphitCol+1);
-					removePos(pos,strategy);
-					removePos(pos,topMiddleSection);
-					removePos(pos,bottomMiddleSection);
-					removePos(pos,topLeftSection);
-					removePos(pos,topRightSection);
-					removePos(pos,bottomRightSection);
+					pos = new Position (shiphitRow, shiphitCol-1);
+					removeAllLists(pos);
 				}
 				shiphitCounter++;
 
@@ -178,22 +157,37 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 
 
+		if (!shipHit)
+				grid.dumpShipConditions();
+
 			//If the pos has a ship and is hit
 			if (grid.hit(pos)&&!shipHit)
 			{
 				System.out.println("There has been a hit");
+
 				shipHit = true;
 				shiphitCounter = 1;
 				shiphitRow = getRow(pos);
 				shiphitCol = getCol(pos);
 			}
 		}
-		 */
+
 		pos.setMyStrat(false);
 		if(pos == null)
 			System.out.println("pos is null");
 		return pos;
 
+	}
+
+	public void removeAllLists(Position pos)
+	{
+		removePos(pos,strategy);
+		removePos(pos,topMiddleSection);
+		removePos(pos,bottomMiddleSection);
+		removePos(pos,topLeftSection);
+		removePos(pos,topRightSection);
+		removePos(pos,bottomRightSection);
+		removePos(pos,randomCorners);
 	}
 
 	public void removePos(Position pos, ArrayList posArray)
