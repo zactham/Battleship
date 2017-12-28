@@ -175,7 +175,8 @@ Turn #21: Your shot at H-7 was a miss.
 			{
 				System.out.print(playerArray[r][c] + " ");
 			}
-			System.out.println();
+			if (r<10)
+				System.out.println();
 		}
 
 		//Turn #21: Your shot at H-7 was a miss.

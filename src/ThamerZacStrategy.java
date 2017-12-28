@@ -144,6 +144,8 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			{
 				if (shiphitCounter == 1)
 				{
+					if (shiphitRow>9)
+						shiphitRow=9;
 					pos = new Position (shiphitRow +1, shiphitCol);
 					removeAllLists(pos);
 				}
@@ -151,18 +153,24 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 				else if (shiphitCounter == 2)
 				{
+					if (shiphitRow<2)
+						shiphitRow=2;
 					pos = new Position (shiphitRow -1, shiphitCol);
 					removeAllLists(pos);
 				}
 
 				else if (shiphitCounter == 3)
 				{
+					if (shiphitCol>9)
+						shiphitCol=9;
 					pos = new Position (shiphitRow, shiphitCol+1);
 					removeAllLists(pos);
 				}
 
 				else if (shiphitCounter == 4)
 				{
+					if (shiphitCol<2)
+						shiphitCol=2;
 					pos = new Position (shiphitRow, shiphitCol-1);
 					removeAllLists(pos);
 				}

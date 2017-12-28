@@ -61,8 +61,8 @@ public class Position
 	{
 		if (myStrat)
 		{
-			letter = letterArray[rowIn];
 			rowIn = rowIndex - 1;
+			letter = letterArray[rowIn];
 			colIn = colIndex - 1;
 			index = colIndex - 1;
 		}

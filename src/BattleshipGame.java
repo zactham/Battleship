@@ -29,6 +29,7 @@ public class BattleshipGame
 			// get position of shot
 			Position pos = p.shoot();
 
+			System.out.println("\n***** Shooting at " + pos);
 			// shoot at that position in the ocean
 			oc.shootAt(pos);
 
