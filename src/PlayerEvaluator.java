@@ -56,7 +56,7 @@ public class PlayerEvaluator extends BattleshipPlayer
 		{
 			averageTurns+=turnsList.get(i);
 		}
-		return averageTurns;
+		return (averageTurns / turnsList.size());
 	}
 }
 

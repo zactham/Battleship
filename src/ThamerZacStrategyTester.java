@@ -6,7 +6,7 @@ public class ThamerZacStrategyTester extends ComputerBattleshipPlayer
 		
 		ThamerZacStrategy CPU = new ThamerZacStrategy();
 	
-		PlayerEvaluator PE = new PlayerEvaluator(CPU, 1);
+		PlayerEvaluator PE = new PlayerEvaluator(CPU, 50);
 		
 		System.out.println("Min = "+PE.minTurns());
 		System.out.println("Max = "+PE.maxTurns());

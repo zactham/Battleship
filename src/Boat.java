@@ -78,17 +78,22 @@ public class Boat {
 	// takes a Position as an argument and returns a boolean, true if the ship
 	// has been hit in that place, false otherwise
 	public boolean isHit(Position p) {
-		if (hitList.contains(p)) {
-			return true;
-		} else
-			return false;
+		for (int i=0; i<hitList.size(); i++)
+		{
+			if (hitList.get(i).getCol() == p.getCol() &&
+				hitList.get(i).getRow() == p.getRow())
+				return true;
+		}
+		return false;
 	}
 
 	// takes a Position as an argument. If that argument overlaps the ship, it
 	// records the fact that the ship has been hit in that position
 	public void hit(Position p) {
-		if (onBoat(p) == true) {
-			hitList.add(p);
+		if (onBoat(p) == true) 
+		{
+			if (!isHit(p))
+				hitList.add(p);
 		}
 	}
 

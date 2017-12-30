@@ -64,7 +64,7 @@ public class Position
 			rowIn = rowIndex - 1;
 			letter = letterArray[rowIn];
 			colIn = colIndex - 1;
-			index = colIndex - 1;
+			index = colIndex;
 		}
 		else
 		{

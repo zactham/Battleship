@@ -99,8 +99,20 @@ public class BattleshipGrid
 		int column = pos.getcolumnIndex();
 
 		return grid[row][column];
-
-
 	}
+	
+	public boolean hasEmpty()
+	{
+		for (int i = 0; i< 10; i++)
+		{
+			for (int z = 0; z<10; z++)
+			{
+				if (shipCondition[i][z] == "empty")
+					return true;
+			}
+		}
+		return false;
+	}
+	
 
 }

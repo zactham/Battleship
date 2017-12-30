@@ -28,6 +28,11 @@ public class BattleshipGame
 		{
 			// get position of shot
 			Position pos = p.shoot();
+			if (pos == null)
+			{
+				System.out.println("Can't find valid pos!");
+				break;
+			}
 
 			System.out.println("\n***** Shooting at " + pos);
 			// shoot at that position in the ocean
@@ -45,11 +50,21 @@ public class BattleshipGame
 			// check for end conditions
 			if (turns>=100)
 				tooManyTurns = true;
-			if (oc.allSunk() || tooManyTurns)
+			if (oc.allSunk())
+			{
+				System.out.println("ALL SHIPS SUNK");
 				gameOver = true;
+			}
+			if (tooManyTurns)
+			{
+				System.out.println("Too many turns");
+				gameOver = true;
+			}
 
 			p.updatePlayer(pos,  hit,  initial,  boatName,  sunk,  gameOver,  tooManyTurns, turns);
 		}
+		
+		
 		return turns;
 	}
 }

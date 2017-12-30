@@ -65,29 +65,41 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 	public Position shoot()
 	{
 		Position pos = null;
-		if(shotCounter<37)
-		{
-			pos = strategy.get(shotCounter);
-		}
 		Position.setMyStrat(true);
 		
 		// check for hit at previous position
 		if (prevPos != null)
-		{
+		{			
 			if (grid.hit(prevPos))
 			{
 				System.out.println("There has been a hit");
-
+				if (shipHit == false)
+					shiphitCounter = 1;		// start hit sequence
 				shipHit = true;
-				shiphitCounter = 1;
 				shiphitRow = getRow(prevPos);
 				shiphitCol = getCol(prevPos);
-			}
-			
+			}	
+			else
+				shipHit = false;
 		}
+		
+		if (!shipHit)
+		{
+			// get next empty pos from strategy list
+			while (strategy.size() > 0)
+			{
+				pos = strategy.get(0);
+				if (grid.empty(pos))
+					break;
+				else
+					strategy.remove(0);
+			}		
+		}	
+		
+		
 
 		//The last section of paths, the corner sides of the grid
-		if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size())
+		if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size() && randomCorners.size()>0)
 		{
 			Random r = new Random();
 			int num = r.nextInt(randomCorners.size());
@@ -109,10 +121,9 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 				int randomNumTMS = r.nextInt(topMiddleSection.size());
 				if (num == 0)
 				{
-					System.out.println(num);
+//					System.out.println(num);
 					pos = topMiddleSection.get(randomNumTMS);
 					topMiddleSection.remove(randomNumTMS);
-					topsectionshotCounter++;
 
 				}
 			}
@@ -121,69 +132,74 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 				int randomNumBMS = r.nextInt(bottomMiddleSection.size());
 				if (num == 1)
 				{
-					System.out.println(num);
+//					System.out.println(num);
 					pos = bottomMiddleSection.get(randomNumBMS);
 					bottomMiddleSection.remove(randomNumBMS);
-					bottomsectionshotCounter++;
 				}
-
 			}
 		}
-		else
-			shotCounter++;
 
-
+		while (shipHit)
 		{
+			if (pos != null && grid.empty(pos))
+				break;
+			
 			//System.out.println("Checking for hits");
 			//After hitting all of the possible squares surrounding one that has been hit it goes back to false
 			if (shiphitCounter == 5)
+			{
 				shipHit = false;
+				pos = null;
+				break;
+			}
 
 			//Checks all of the surrounding squares of the square that has been hit w the ship in it
-			if (shipHit)
+			if (shiphitCounter == 1)
 			{
-				if (shiphitCounter == 1)
-				{
-					if (shiphitRow>9)
-						shiphitRow=9;
-					pos = new Position (shiphitRow +1, shiphitCol);
-					removeAllLists(pos);
-				}
-
-
-				else if (shiphitCounter == 2)
-				{
-					if (shiphitRow<2)
-						shiphitRow=2;
-					pos = new Position (shiphitRow -1, shiphitCol);
-					removeAllLists(pos);
-				}
-
-				else if (shiphitCounter == 3)
-				{
-					if (shiphitCol>9)
-						shiphitCol=9;
-					pos = new Position (shiphitRow, shiphitCol+1);
-					removeAllLists(pos);
-				}
-
-				else if (shiphitCounter == 4)
-				{
-					if (shiphitCol<2)
-						shiphitCol=2;
-					pos = new Position (shiphitRow, shiphitCol-1);
-					removeAllLists(pos);
-				}
-				shiphitCounter++;
-
+				if (shiphitRow>9)
+					shiphitRow=9;
+				pos = new Position (shiphitRow +1, shiphitCol);
+				removeAllLists(pos);
 			}
 
 
+			else if (shiphitCounter == 2)
+			{
+				if (shiphitRow<2)
+					shiphitRow=2;
+				pos = new Position (shiphitRow -1, shiphitCol);
+				removeAllLists(pos);
+			}
+
+			else if (shiphitCounter == 3)
+			{
+				if (shiphitCol>9)
+					shiphitCol=9;
+				pos = new Position (shiphitRow, shiphitCol+1);
+				removeAllLists(pos);
+			}
+
+			else if (shiphitCounter == 4)
+			{
+				if (shiphitCol<2)
+					shiphitCol=2;
+				pos = new Position (shiphitRow, shiphitCol-1);
+				removeAllLists(pos);
+			}
+			shiphitCounter++;
+		} 
+
+		if (pos == null || !grid.empty(pos))
+		{
+			Random r = new Random();
+			do
+			{
+				pos = new Position(r.nextInt(10) + 1, r.nextInt(10) + 1);
+			} while (grid.hasEmpty() && !grid.empty(pos));
 		}
-
-		pos.setMyStrat(false);
-
+		
 		prevPos = pos;		// record position for next turn
+		Position.setMyStrat(false);
 		
 		return pos;
 
