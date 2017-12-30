@@ -13,13 +13,6 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 	public boolean shipHit = false;
 	public int shiphitCounter = 0;
-	public int topsectionshotCounter = 0;
-	public int bottomsectionshotCounter = 0;
-
-	public int topleftsectionshotCounter = 0;
-	public int toprightsectionshotCounter = 0;
-	public int bottomrightsectionshotCounter = 0;
-	public int bottomleftsectionshotCounter = 0;
 
 	public int shiphitRow = 0;
 	public int shiphitCol = 0;
@@ -35,9 +28,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 	public ArrayList <Position> randomCorners = new ArrayList <Position>();
 
-	public int shotCounter = 1;
-	public boolean hitSquare = false;
-	
+	public boolean hitSquare = false;	
 
 	public ThamerZacStrategy()
 	{
@@ -73,14 +64,11 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			if (grid.hit(prevPos))
 			{
 				System.out.println("There has been a hit");
-				if (shipHit == false)
-					shiphitCounter = 1;		// start hit sequence
+				shiphitCounter = 1;		// start hit sequence
 				shipHit = true;
 				shiphitRow = getRow(prevPos);
 				shiphitCol = getCol(prevPos);
 			}	
-			else
-				shipHit = false;
 		}
 		
 		if (!shipHit)
@@ -92,53 +80,62 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 				if (grid.empty(pos))
 					break;
 				else
+				{
 					strategy.remove(0);
+					pos = null;
+				}
 			}		
-		}	
 		
-		
-
-		//The last section of paths, the corner sides of the grid
-		if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size() && randomCorners.size()>0)
-		{
-			Random r = new Random();
-			int num = r.nextInt(randomCorners.size());
-			pos = randomCorners.get(num);
-			randomCorners.remove(num);
-		}
-
-		//After the main paths, the top middle and bottom middle sections are randomly hit
-		if (shotCounter >= strategy.size())
-		{
-			Random r = new Random();
-			int num = r.nextInt(2);
-			if(bottomMiddleSection.size() == 0)
-				num = 0;
-			if(topMiddleSection.size() == 0)
-				num = 1;
-			if(topMiddleSection.size()>0)
+			if (pos == null)
 			{
-				int randomNumTMS = r.nextInt(topMiddleSection.size());
-				if (num == 0)
+				//The last section of paths, the corner sides of the grid
+				if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size() && randomCorners.size()>0)
 				{
-//					System.out.println(num);
-					pos = topMiddleSection.get(randomNumTMS);
-					topMiddleSection.remove(randomNumTMS);
-
+					Random r = new Random();
+					int num = r.nextInt(randomCorners.size());
+					pos = randomCorners.get(num);
+					randomCorners.remove(num);
+					if (!grid.empty(pos))
+						pos = null;
+				}
+				
+				//After the main paths, the top middle and bottom middle sections are randomly hit
+				if (pos == null)
+				{
+					Random r = new Random();
+					int num = r.nextInt(2);
+					if(bottomMiddleSection.size() == 0)
+						num = 0;
+					if(topMiddleSection.size() == 0)
+						num = 1;
+					if(topMiddleSection.size()>0)
+					{
+						int randomNumTMS = r.nextInt(topMiddleSection.size());
+						if (num == 0)
+						{
+		//					System.out.println(num);
+							pos = topMiddleSection.get(randomNumTMS);
+							topMiddleSection.remove(randomNumTMS);
+							if (!grid.empty(pos))
+								pos = null;
+						}
+					}
+					if(bottomMiddleSection.size()>0 && pos == null)
+					{
+						int randomNumBMS = r.nextInt(bottomMiddleSection.size());
+						if (num == 1)
+						{
+		//					System.out.println(num);
+							pos = bottomMiddleSection.get(randomNumBMS);
+							bottomMiddleSection.remove(randomNumBMS);
+							if (!grid.empty(pos))
+								pos = null;
+						}
+					}
 				}
 			}
-			if(bottomMiddleSection.size()>0)
-			{
-				int randomNumBMS = r.nextInt(bottomMiddleSection.size());
-				if (num == 1)
-				{
-//					System.out.println(num);
-					pos = bottomMiddleSection.get(randomNumBMS);
-					bottomMiddleSection.remove(randomNumBMS);
-				}
-			}
 		}
-
+		
 		while (shipHit)
 		{
 			if (pos != null && grid.empty(pos))
