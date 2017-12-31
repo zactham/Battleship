@@ -27,6 +27,7 @@ public class BattleshipGame
 		while (!gameOver)
 		{
 			// get position of shot
+			System.out.println("\n");
 			Position pos = p.shoot();
 			if (pos == null)
 			{
@@ -34,7 +35,7 @@ public class BattleshipGame
 				break;
 			}
 
-			System.out.println("\n***** Shooting at " + pos);
+			System.out.println("*** Shooting at " + pos);
 			// shoot at that position in the ocean
 			oc.shootAt(pos);
 
