@@ -107,12 +107,59 @@ public class BattleshipGrid
 		{
 			for (int z = 0; z<10; z++)
 			{
-				if (shipCondition[i][z] == "empty")
+				if (shipCondition[i][z].equals("empty"))
 					return true;
 			}
 		}
 		return false;
 	}
 	
+	public boolean isEmpty2x2(int i, int z)
+	{
+		if (shipCondition[i][z].equals("empty") &&
+				shipCondition[i+1][z].equals("empty") &&
+				shipCondition[i+1][z+1].equals("empty") &&
+				shipCondition[i][z+1].equals("empty"))
+			return true;
+		return false;
+	}
+	
+	public boolean hasEmpty2x2()
+	{
+		for (int i = 0; i< 9; i++)
+		{
+			for (int z = 0; z<9; z++)
+			{
+				if (isEmpty2x2(i,z))
+					return true;
+			}
+		}
+		return false;
+	}
 
+	public boolean hasNoNeighbors(int i, int z)
+	{
+		if (shipCondition[i+1][z].equals("empty") &&
+				shipCondition[i-1][z].equals("empty") &&
+				shipCondition[i][z+1].equals("empty") &&
+				shipCondition[i][z-1].equals("empty"))
+			return true;
+		return false;
+	}
+	
+	public boolean hasNoNeighbors()
+	{
+		for (int i = 1; i<9; i++)
+		{
+			for (int z = 1; z<9; z++)
+			{
+				if (hasNoNeighbors(i,z) && shipCondition[i][z].equals("empty"))
+				{
+					System.out.println("HNN:" + i + "," + z);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

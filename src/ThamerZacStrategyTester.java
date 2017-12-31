@@ -11,5 +11,7 @@ public class ThamerZacStrategyTester extends ComputerBattleshipPlayer
 		System.out.println("Min = "+PE.minTurns());
 		System.out.println("Max = "+PE.maxTurns());
 		System.out.println("Average = "+PE.averageTurns());
+		
+		PE.dumpTurns();
 	}
 }

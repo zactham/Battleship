@@ -24,27 +24,29 @@ public class PlayerEvaluator extends BattleshipPlayer
 	//This returns the maximum number of turns it took the computer player to sink all the boats in the BattleshipGame.
 	public int maxTurns()
 	{
+		int max = 0;
 		for (int i = 0; i < turnsList.size(); i ++)
 		{
-			if (turnsList.get(i) > turnsList.get(0) )
+			if (turnsList.get(i) > max )
 			{
-				turnsList.set(0, turnsList.get(i));
+				max = turnsList.get(i);
 			}
 		}
-		return turnsList.get(0);
+		return max;
 	}
 
 	//This returns the minimum number of turns it took the computer player to sink all the boats in the BattleshipGame.
 	public int minTurns()
 	{
+		int min = 999;
 		for (int i = 0; i < turnsList.size(); i ++)
 		{
-			if (turnsList.get(0) > turnsList.get(i))
+			if (min > turnsList.get(i))
 			{
-				turnsList.set(0, turnsList.get(i));
+				min = turnsList.get(i);
 			}
 		}
-		return turnsList.get(0);
+		return min;
 	}
 
 
@@ -57,6 +59,12 @@ public class PlayerEvaluator extends BattleshipPlayer
 			averageTurns+=turnsList.get(i);
 		}
 		return (averageTurns / turnsList.size());
+	}
+
+	public void dumpTurns()
+	{
+		for (int i = 0; i < turnsList.size(); i ++)
+			System.out.println(turnsList.get(i));
 	}
 }
 

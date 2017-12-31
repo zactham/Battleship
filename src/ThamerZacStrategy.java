@@ -4,13 +4,13 @@ import java.util.Random;
 public class ThamerZacStrategy extends ComputerBattleshipPlayer
 {
 
-	private Position prevPos = null;
 	
 	public Position pos1;
 	public Position pos2;
 	public Position pos3;
 	public Position pos4;
 
+	private Position prevPos = null;
 	public boolean shipHit = false;
 	public int shiphitCounter = 0;
 
@@ -28,14 +28,8 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 
 	public ArrayList <Position> randomCorners = new ArrayList <Position>();
 
-	public boolean hitSquare = false;	
-
 	public ThamerZacStrategy()
 	{
-		Position.setMyStrat(true);
-		shotSetups();
-		afterPath();
-		allCornerShots();
 
 	}
 
@@ -77,63 +71,12 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			while (strategy.size() > 0)
 			{
 				pos = strategy.get(0);
+				strategy.remove(0);
 				if (grid.empty(pos))
 					break;
 				else
-				{
-					strategy.remove(0);
 					pos = null;
-				}
 			}		
-		
-			if (pos == null)
-			{
-				//The last section of paths, the corner sides of the grid
-				if(0 == topMiddleSection.size() && 0 == bottomMiddleSection.size() && randomCorners.size()>0)
-				{
-					Random r = new Random();
-					int num = r.nextInt(randomCorners.size());
-					pos = randomCorners.get(num);
-					randomCorners.remove(num);
-					if (!grid.empty(pos))
-						pos = null;
-				}
-				
-				//After the main paths, the top middle and bottom middle sections are randomly hit
-				if (pos == null)
-				{
-					Random r = new Random();
-					int num = r.nextInt(2);
-					if(bottomMiddleSection.size() == 0)
-						num = 0;
-					if(topMiddleSection.size() == 0)
-						num = 1;
-					if(topMiddleSection.size()>0)
-					{
-						int randomNumTMS = r.nextInt(topMiddleSection.size());
-						if (num == 0)
-						{
-		//					System.out.println(num);
-							pos = topMiddleSection.get(randomNumTMS);
-							topMiddleSection.remove(randomNumTMS);
-							if (!grid.empty(pos))
-								pos = null;
-						}
-					}
-					if(bottomMiddleSection.size()>0 && pos == null)
-					{
-						int randomNumBMS = r.nextInt(bottomMiddleSection.size());
-						if (num == 1)
-						{
-		//					System.out.println(num);
-							pos = bottomMiddleSection.get(randomNumBMS);
-							bottomMiddleSection.remove(randomNumBMS);
-							if (!grid.empty(pos))
-								pos = null;
-						}
-					}
-				}
-			}
 		}
 		
 		while (shipHit)
@@ -189,10 +132,25 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		if (pos == null || !grid.empty(pos))
 		{
 			Random r = new Random();
+			boolean hasNoNeighbors = grid.hasNoNeighbors();
+			int row, col;
 			do
 			{
-				pos = new Position(r.nextInt(10) + 1, r.nextInt(10) + 1);
-			} while (grid.hasEmpty() && !grid.empty(pos));
+				if (hasNoNeighbors)
+				{
+					row = (r.nextInt(8) + 1);
+					col = (r.nextInt(8) + 1);
+					if (!grid.hasNoNeighbors(row, col))
+						continue;					
+				}
+				else
+				{
+					row = (r.nextInt(10));		// 0 to 9
+					col = (r.nextInt(10));		// 0 to 9
+				}				
+				pos = new Position(row+1, col+1);
+			} 
+			while (pos==null || (grid.hasEmpty() && !grid.empty(pos)));
 		}
 		
 		prevPos = pos;		// record position for next turn
@@ -410,6 +368,26 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 	//The startGame method needs to be updated so that it does not ask for the human playerï¿½s name.
 	public void startGame()
 	{
+		prevPos = null;
+		shipHit = false;
+		shiphitCounter = 0;
+
+		shiphitRow = 0;
+		shiphitCol = 0;
+		
+		strategy = new ArrayList <Position>();
+		topMiddleSection = new ArrayList <Position>();
+		bottomMiddleSection = new ArrayList <Position>();
+		topLeftSection = new ArrayList <Position>();
+		topRightSection = new ArrayList <Position>();
+		bottomLeftSection = new ArrayList <Position>();
+		bottomRightSection = new ArrayList <Position>();
+
+		Position.setMyStrat(true);
+		shotSetups();
+		afterPath();
+		allCornerShots();
+		
 		System.out.println("BATTLESHIP");
 		System.out.println();	
 	}
