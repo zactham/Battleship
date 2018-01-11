@@ -11,11 +11,11 @@ public class PlayerEvaluator extends BattleshipPlayer
 	private int average;
 	 */
 
-	public PlayerEvaluator(ComputerBattleshipPlayer player, int runs) throws Exception
+	public PlayerEvaluator(ComputerBattleshipPlayer player, int runs, boolean runTestCases) throws Exception
 	{
 		for (int i = 0; i <runs; i++)
 		{
-			BattleshipGame game = new BattleshipGame(player);
+			BattleshipGame game = new BattleshipGame(player, runTestCases);
 			int turns =	game.play();
 			turnsList.add(turns);
 		}
