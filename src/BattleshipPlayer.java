@@ -178,7 +178,8 @@ Turn #21: Your shot at H-7 was a miss.
 			if (r<10)
 				System.out.println();
 		}
-
+	
+			ThamerZacStrategy.setSunk(false);
 		//Turn #21: Your shot at H-7 was a miss.
 		System.out.println();
 		if (gameOver)
@@ -188,7 +189,10 @@ Turn #21: Your shot at H-7 was a miss.
 				System.out.println("Turn #" + turns + ": There have been too many turns");
 			else
 				if (sunk)
+				{
+					ThamerZacStrategy.setSunk(sunk);
 					System.out.println("Turn #" + turns + ": " + boatName +" was sunk");
+				}
 				else	
 					if (hit)
 						System.out.println("Turn #" + turns + ": Your shot at " + pos +" was a hit.");

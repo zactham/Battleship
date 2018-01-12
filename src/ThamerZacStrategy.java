@@ -10,13 +10,21 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 	public int shiphitRow = 0;
 	public int shiphitCol = 0;
 
+	public static boolean shipSunk = false;
+
 
 	public ArrayList <Position> strategy = new ArrayList <Position>();
 	public ArrayList <Position> neighbors = new ArrayList <Position>();
 
 	public ThamerZacStrategy()
 	{
-
+		
+	}
+	
+	//If a ship is sunk, it stops checking the neighboring shots because the ship is already sunk
+	public static void setSunk(boolean s)
+	{
+		shipSunk = s;
 	}
 
 
@@ -76,78 +84,82 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			}
 		}
 	}
-	
+
 	//returns computers shot
 	public Position shoot()
 	{
 		Position pos = null;
 		Position.setMyStrat(true);
-		
-		// check for hit at previous position
-		if (prevPos != null && grid.hit(prevPos))
-		{
-//			System.out.println("There was a hit last turn");
-			shiphitRow = getRow(prevPos);
-			shiphitCol = getCol(prevPos);
 
-			// add neighbors to neighborsList
-			addNeighbors(shiphitRow, shiphitCol);
-		}	
-		
-		while (neighbors.size() > 0)
+		if(!shipSunk)
 		{
-//			System.out.println("Getting pos from neighbors list");
-			pos = neighbors.get(0);
-			neighbors.remove(0);
-			if (grid.empty(pos))
-				break;
-			else
-				pos = null;
-		}
-		
-		if (pos == null)
-		{
-			// get next empty pos from strategy list
-			while (strategy.size() > 0)
+			// check for hit at previous position
+			if (prevPos != null && grid.hit(prevPos))
 			{
-//				System.out.println("Getting pos from strategy list");
-				pos = strategy.get(0);
-				strategy.remove(0);
+				//			System.out.println("There was a hit last turn");
+				shiphitRow = getRow(prevPos);
+				shiphitCol = getCol(prevPos);
+
+				// add neighbors to neighborsList
+				addNeighbors(shiphitRow, shiphitCol);
+			}	
+
+			while (neighbors.size() > 0)
+			{
+				//			System.out.println("Getting pos from neighbors list");
+				pos = neighbors.get(0);
+				neighbors.remove(0);
 				if (grid.empty(pos))
 					break;
-				else
+				else 
 					pos = null;
-			}		
+			}
 		}
-		
-		if (pos == null || !grid.empty(pos))
-		{
-//			System.out.println("Getting random");
-			Random r = new Random();
-			boolean hasNoNeighbors = grid.hasNoNeighbors();
-			int row, col;
-			do
+
+			if (pos == null)
 			{
-				if (hasNoNeighbors)
+				// get next empty pos from strategy list
+				while (strategy.size() > 0)
 				{
-					row = (r.nextInt(8) + 1);
-					col = (r.nextInt(8) + 1);
-					if (!grid.hasNoNeighbors(row, col))
-						continue;					
-				}
-				else
+					//				System.out.println("Getting pos from strategy list");
+					pos = strategy.get(0);
+					strategy.remove(0);
+					if (grid.empty(pos))
+						break;
+					else
+						pos = null;
+				}		
+			}
+
+			if (pos == null || !grid.empty(pos))
+			{
+				//			System.out.println("Getting random");
+				Random r = new Random();
+				boolean hasNoNeighbors = grid.hasNoNeighbors();
+				int row, col;
+				do
 				{
-					row = (r.nextInt(10));		// 0 to 9
-					col = (r.nextInt(10));		// 0 to 9
-				}				
-				pos = new Position(row+1, col+1);
-			} 
-			while (pos==null || (grid.hasEmpty() && !grid.empty(pos)));
-		}
+					if (hasNoNeighbors)
+					{
+						row = (r.nextInt(8) + 1);
+						col = (r.nextInt(8) + 1);
+						if (!grid.hasNoNeighbors(row, col))
+							continue;					
+					}
+					else
+					{
+						row = (r.nextInt(10));		// 0 to 9
+						col = (r.nextInt(10));		// 0 to 9
+					}				
+					pos = new Position(row+1, col+1);
+				} 
+				while (pos==null || (grid.hasEmpty() && !grid.empty(pos)));
+			}
 		
+
 		prevPos = pos;		// record position for next turn
 		Position.setMyStrat(false);
-		
+
 		if (pos != null)
 			removeAllLists(pos);
 		return pos;
@@ -186,7 +198,9 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 	{
 		//Blue Square
 		strategy.add(new Position('E', 5));
+		strategy.add(new Position('E', 6));
 		strategy.add(new Position('F', 6));
+		strategy.add(new Position('F', 5));
 
 		//Red Path
 		for (int i = 4; i > 0; i--)
@@ -217,7 +231,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 			r2++; 
 		}
 
-/*
+		/*
 		//Brown Path
 		for (int i = 1; i< 5; i++)
 		{
@@ -241,7 +255,7 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		{
 			strategy.add(new Position((char)('A'+6-1), i));
 		}
-*/
+		 */
 
 	}
 
@@ -252,19 +266,20 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		prevPos = null;
 		shipHit = false;
 		shiphitCounter = 0;
+		shipSunk = false;
 
 		shiphitRow = 0;
 		shiphitCol = 0;
-		
+
 		strategy = new ArrayList <Position>();
 		neighbors = new ArrayList <Position>();
 
 		Position.setMyStrat(true);
 		shotSetups();
-		
+
 		System.out.println("BATTLESHIP");
 		System.out.println();	
-		
+
 		for (int i=0;i<strategy.size();i++)
 			System.out.println(i + ". " + strategy.get(i));
 	}

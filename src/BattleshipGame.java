@@ -34,6 +34,11 @@ public class BattleshipGame
 			oc.placeAllBoats();
 		else if (testCase == 1)
 		{
+			/*Sides of the grid:
+	Placement - I want to place all of the 5 boats, on each side of the grid.  
+Methods - This will test the part of the code in which I randomly choose either the top or bottom of the grid and shoot in between the shape of the X, to see if the ships that are not part of the X are hit.  It will also test my “hunt” method, where once a ship is hit it checks the surrounding positions to finish off that whole ship.  Since these ships are on the side of the grid, they have one less position to check so I want to make sure this operates correctly.   
+Expected Output - it will hit and kill all the ships but take longer than usual because none of these ships are on the initial X pattern (my main strategy) 
+			 */
 			///////////////////////////////////////// TEST CASE 1/////////////////////////////////////////////////
 			Position ac1 = new Position (0,2);
 			oc.placeBoat("Aircraft Carrier", "horizontal", ac1);
@@ -49,6 +54,11 @@ public class BattleshipGame
 		}
 		else if (testCase == 2)
 		{
+			/*Corners of the grid:
+	Placement - I want to place all of the 5 boats, in each corner of the grid. 
+ Methods - This will test my main strategy, X paths, to make sure my strategy attempts to hit that first.  It will also test my “hunt” method, where once a ship is hit it checks the surrounding positions to finish off that whole ship.  Since these ships are in the corner of the grid, they have two less position to check so I want to make sure this operates correctly.    
+Output -  it will hit and kill all the ships starting with the light blue one first
+			 */
 			///////////////////////////////////////// TEST CASE 2/////////////////////////////////////////////////
 			Position ac2 = new Position (0,0);
 			oc.placeBoat("Aircraft Carrier", "vertical", ac2);
@@ -63,6 +73,11 @@ public class BattleshipGame
 		}
 		else if (testCase == 3)
 		{
+			/*Ships in a row:
+	Placement - I want to place all of the 5 boats in a row together in the center of the grid.  
+Methods - This will check my initial X path of the four middle squares.  This will also check my “hunt” method, which checks the surrounding squares of any hit.
+Output -   Since the ships are all lined up, I want to see if it switches ships and if it still hits all the ships quickly.It should finish off all ships and start with the light blue one
+*/
 			///////////////////////////////////////// TEST CASE 3/////////////////////////////////////////////////
 			Position ac3 = new Position (2,2);
 			oc.placeBoat("Aircraft Carrier", "vertical", ac3);
@@ -74,6 +89,53 @@ public class BattleshipGame
 			oc.placeBoat("Submarine", "vertical", sub3);
 			Position des3 = new Position (2,6);
 			oc.placeBoat("Destroyer", "vertical", des3);
+		}
+		else if (testCase == 4)
+		{
+			System.out.println("Enter aircraft carrier x");
+			int acx = input.nextInt();
+			System.out.println("Enter aircraft carrier y");
+			int acy = input.nextInt();
+			System.out.println("Enter horizontal or vertical");
+			String direction = input.next();
+			Position ac4 = new Position (acx,acy);
+			oc.placeBoat("Aircraft Carrier", direction, ac4);
+			
+			System.out.println("Enter battleship x");
+			int bsx = input.nextInt();
+			System.out.println("Enter battleship y");
+			int bsy = input.nextInt();
+			System.out.println("Enter horizontal or vertical");
+			String direction2 = input.next();
+			Position bs4 = new Position (bsx,bsy);
+			oc.placeBoat("Battleship", direction2, bs4);
+			
+			System.out.println("Enter cruiser x");
+			int csx = input.nextInt();
+			System.out.println("Enter cruiser y");
+			int csy = input.nextInt();
+			System.out.println("Enter horizontal or vertical");
+			String direction3 = input.next();
+			Position cs4 = new Position (csx,csy);
+			oc.placeBoat("Cruiser", direction3, cs4);
+			
+			System.out.println("Enter submarine x");
+			int subx = input.nextInt();
+			System.out.println("Enter submarine y");
+			int suby = input.nextInt();
+			System.out.println("Enter horizontal or vertical");
+			String direction4 = input.next();
+			Position sub3 = new Position (subx,suby);
+			oc.placeBoat("Submarine", direction4, sub3);
+			
+			System.out.println("Enter destroyer x");
+			int desx = input.nextInt();
+			System.out.println("Enter destroyer y");
+			int desy = input.nextInt();
+			System.out.println("Enter horizontal or vertical");
+			String direction5 = input.next();
+			Position des4 = new Position (desx,desy);
+			oc.placeBoat("Destroyer", direction5, des4);
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		//oc.dumpGrid();		// FOR TESTING ONLY
