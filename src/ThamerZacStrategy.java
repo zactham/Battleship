@@ -280,8 +280,9 @@ public class ThamerZacStrategy extends ComputerBattleshipPlayer
 		System.out.println("BATTLESHIP");
 		System.out.println();	
 
-		for (int i=0;i<strategy.size();i++)
-			System.out.println(i + ". " + strategy.get(i));
+		//TODO prints all of the turns
+		//for (int i=0;i<strategy.size();i++)
+		//	System.out.println(i + ". " + strategy.get(i));
 	}
 
 

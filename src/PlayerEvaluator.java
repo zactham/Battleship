@@ -61,11 +61,16 @@ public class PlayerEvaluator extends BattleshipPlayer
 		return (averageTurns / turnsList.size());
 	}
 
+	
+	//////////////////////////////////////////////
+	//TODO prints all of the turns per each game
 	public void dumpTurns()
 	{
 		for (int i = 0; i < turnsList.size(); i ++)
 			System.out.println(turnsList.get(i));
 	}
+	
 }
+
 
 

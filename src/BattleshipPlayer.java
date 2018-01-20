@@ -118,8 +118,39 @@ J  . . . . . . * . . .
 Turn #21: Your shot at H-7 was a miss.
 
 	 */
-
+/////////////////////////////////////////
 	public void updatePlayer(Position pos, boolean hit, char initial, String boatName, boolean sunk, boolean gameOver, boolean tooManyTurns, int turns)
+	{
+		//TODO prints all the grid information
+		//printGrid(pos, hit,  initial,  boatName,  sunk,  gameOver,  tooManyTurns,  turns);
+		/*
+		//Denote a square that has been shot at and is a miss with an asterisk (*)
+		if (grid.miss(pos))
+			playerArray[row+1][col+1] = '*';
+		 */
+
+		//First Column
+		playerArray[1][0] = 'A';
+		playerArray[2][0] = 'B';
+		playerArray[3][0] = 'C';
+		playerArray[4][0] = 'D';
+		playerArray[5][0] = 'E';
+		playerArray[6][0] = 'F';
+		playerArray[7][0] = 'G';
+		playerArray[8][0] = 'H';
+		playerArray[9][0] = 'I';
+		playerArray[10][0] = 'J';
+
+		ThamerZacStrategy.setSunk(false);
+		//Turn #21: Your shot at H-7 was a miss.
+
+		if (sunk)
+			ThamerZacStrategy.setSunk(sunk);
+
+	}
+
+
+	public void printGrid(Position pos, boolean hit, char initial, String boatName, boolean sunk, boolean gameOver, boolean tooManyTurns, int turns)
 	{
 		int row = pos.getrowIndex();
 		int col = pos.getcolumnIndex();
@@ -136,18 +167,12 @@ Turn #21: Your shot at H-7 was a miss.
 			}
 		}
 
-
-
 		//Denote a square that has been shot at and hit with the initial of the boat that has been hit.
 		if (hit)
 			playerArray[row+1][col+1] = initial;
 		else
 			playerArray[row+1][col+1] = '*';
-		/*
-		//Denote a square that has been shot at and is a miss with an asterisk (*)
-		if (grid.miss(pos))
-			playerArray[row+1][col+1] = '*';
-		 */
+
 
 		//Prints the grid numbers at the top
 		System.out.print("  ");
@@ -156,19 +181,6 @@ Turn #21: Your shot at H-7 was a miss.
 			numArray[i]= i+1;
 			System.out.print(numArray[i] + " ");
 		}
-
-		//First Column
-		playerArray[1][0] = 'A';
-		playerArray[2][0] = 'B';
-		playerArray[3][0] = 'C';
-		playerArray[4][0] = 'D';
-		playerArray[5][0] = 'E';
-		playerArray[6][0] = 'F';
-		playerArray[7][0] = 'G';
-		playerArray[8][0] = 'H';
-		playerArray[9][0] = 'I';
-		playerArray[10][0] = 'J';
-
 		for (int r = 0; r < 11; r++)
 		{
 			for (int c = 0; c < 11; c ++)
@@ -178,9 +190,6 @@ Turn #21: Your shot at H-7 was a miss.
 			if (r<10)
 				System.out.println();
 		}
-	
-			ThamerZacStrategy.setSunk(false);
-		//Turn #21: Your shot at H-7 was a miss.
 		System.out.println();
 		if (gameOver)
 			System.out.println("Turn #" + turns + ": Game Over ");
@@ -189,10 +198,7 @@ Turn #21: Your shot at H-7 was a miss.
 				System.out.println("Turn #" + turns + ": There have been too many turns");
 			else
 				if (sunk)
-				{
-					ThamerZacStrategy.setSunk(sunk);
 					System.out.println("Turn #" + turns + ": " + boatName +" was sunk");
-				}
 				else	
 					if (hit)
 						System.out.println("Turn #" + turns + ": Your shot at " + pos +" was a hit.");
